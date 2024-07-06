@@ -1,24 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import Cart from "../src/components/Cart"
+import Main from "../src/components/Main"
+import FullCart from "../src/components/Bag/fullCart/FullCart"
+import OrderPlaced from "../src/components/orderPlaced/OrderPlaced"
+
+import { useContext } from "react"
+import { AccountContext } from "./context/AccountProvider"
+import {Box} from "@mui/material"
+import IndivisualItems from "./components/Item/IndivisualItems"
+
 
 function App() {
+  const {cartOpen,itemsInCart,orderPlaced,choseItem}=useContext(AccountContext);
+
+  const isCartEmpty=itemsInCart.length===0;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box>
+      {
+        cartOpen?
+          <Box>
+            {
+              isCartEmpty?
+                (<Cart></Cart>)
+                :
+                <Box>
+                  {
+                    orderPlaced?
+                      (<OrderPlaced></OrderPlaced>)
+                      :
+                      (<FullCart></FullCart>)
+                  }
+                </Box>
+                
+            }
+          </Box>
+          :
+          <Box>
+            {
+              choseItem?
+                (<IndivisualItems></IndivisualItems>)
+                :
+                (<Main></Main>)
+            }
+          </Box>
+          
+      }
+    </Box>
+    
+    
   );
 }
 
